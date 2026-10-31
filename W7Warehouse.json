@@ -1,0 +1,433 @@
+[
+    {
+        "id": "w07_shelf_tab",
+        "type": "tab",
+        "label": "W07 Shelf + InfluxDB",
+        "disabled": false,
+        "info": "Smart Shelf 6-slot: MQTT check/place orchestration and InfluxDB 2.x logging"
+    },
+    {
+        "id": "w07_comment_request",
+        "type": "comment",
+        "z": "w07_shelf_tab",
+        "name": "1) ทดสอบคำขอจัดเก็บ: ระบุ item_id และใส่ slot_id หรือเว้นเพื่อเลือกช่องว่างอัตโนมัติ",
+        "info": "",
+        "x": 430,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "w07_inject_store",
+        "type": "inject",
+        "z": "w07_shelf_tab",
+        "name": "Test BOX001 -> S01",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"item_id\":\"BOX001\",\"slot_id\":\"S01\",\"shelf_id\":\"SHELF_A\"}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "w07_fn_prepare"
+            ]
+        ]
+    },
+    {
+        "id": "w07_fn_prepare",
+        "type": "function",
+        "z": "w07_shelf_tab",
+        "name": "Prepare check request",
+        "func": "let input = msg.payload;\n\nif (typeof input === \"string\") {\n    try {\n        input = JSON.parse(input);\n    } catch (err) {\n        node.error(\"Request JSON ไม่ถูกต้อง\", msg);\n        return null;\n    }\n}\n\nif (!input || !input.item_id) {\n    node.error(\"คำขอต้องมี item_id\", msg);\n    return null;\n}\n\nconst shelfId = input.shelf_id || \"SHELF_A\";\nlet slotId = input.slot_id;\n\n// ถ้าไม่ระบุ slot_id ให้เลือกช่อง EMPTY แรกจากสถานะล่าสุดที่ Unity ส่งมา\nif (!slotId) {\n    const cachedSlots = flow.get(\"shelf_slots_\" + shelfId) || [];\n    const freeSlot = cachedSlots.find(s => s.free === true && s.state === \"EMPTY\");\n\n    if (!freeSlot) {\n        node.warn(\"ไม่พบช่องว่าง หรือยังไม่ได้รับ state/slots จาก Unity\");\n        return null;\n    }\n\n    slotId = freeSlot.slot_id;\n}\n\nconst requestId = \"REQ-\" + Date.now();\nconst pending = {\n    request_id: requestId,\n    item_id: String(input.item_id),\n    slot_id: String(slotId),\n    shelf_id: String(shelfId)\n};\n\nflow.set(\"pending_\" + requestId, pending);\n\nmsg.topic = \"dgt/warehouse/shelf/\" + shelfId + \"/command/check\";\nmsg.qos = 1;\nmsg.retain = false;\nmsg.payload = JSON.stringify({\n    request_id: requestId,\n    slot_id: String(slotId)\n});\n\nnode.status({fill: \"blue\", shape: \"dot\", text: \"check \" + slotId});\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 100,
+        "wires": [
+            [
+                "w07_mqtt_command_out"
+            ]
+        ]
+    },
+    {
+        "id": "w07_mqtt_command_out",
+        "type": "mqtt out",
+        "z": "w07_shelf_tab",
+        "name": "MQTT command to Unity",
+        "topic": "",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "71ec8461297a712b",
+        "x": 690,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "w07_comment_check",
+        "type": "comment",
+        "z": "w07_shelf_tab",
+        "name": "2) รับผลตรวจช่อง ถ้าว่างจึงสั่ง Place",
+        "info": "",
+        "x": 260,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "w07_mqtt_check_in",
+        "type": "mqtt in",
+        "z": "w07_shelf_tab",
+        "name": "Shelf check feedback",
+        "topic": "dgt/warehouse/shelf/+/feedback/check",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "71ec8461297a712b",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 240,
+        "wires": [
+            [
+                "w07_json_check"
+            ]
+        ]
+    },
+    {
+        "id": "w07_json_check",
+        "type": "json",
+        "z": "w07_shelf_tab",
+        "name": "JSON to object",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 350,
+        "y": 240,
+        "wires": [
+            [
+                "w07_fn_check_result"
+            ]
+        ]
+    },
+    {
+        "id": "w07_fn_check_result",
+        "type": "function",
+        "z": "w07_shelf_tab",
+        "name": "If free -> place",
+        "func": "const feedback = msg.payload || {};\nconst requestId = feedback.request_id;\nconst key = \"pending_\" + requestId;\nconst pending = flow.get(key);\n\nif (!pending) {\n    return [null, {\n        payload: {\n            result: \"IGNORED\",\n            reason: \"PENDING_REQUEST_NOT_FOUND\",\n            feedback: feedback\n        }\n    }];\n}\n\nif (feedback.free !== true || feedback.state !== \"EMPTY\") {\n    flow.set(key, null);\n\n    node.status({fill: \"yellow\", shape: \"ring\", text: pending.slot_id + \" not free\"});\n\n    return [null, {\n        payload: {\n            result: \"REJECTED\",\n            reason: \"SLOT_NOT_EMPTY\",\n            request: pending,\n            feedback: feedback\n        }\n    }];\n}\n\nmsg.topic = \"dgt/warehouse/shelf/\" + pending.shelf_id + \"/command/place\";\nmsg.qos = 1;\nmsg.retain = false;\nmsg.payload = JSON.stringify({\n    request_id: pending.request_id,\n    item_id: pending.item_id,\n    slot_id: pending.slot_id\n});\n\nnode.status({fill: \"green\", shape: \"dot\", text: \"place \" + pending.slot_id});\nreturn [msg, null];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 240,
+        "wires": [
+            [
+                "w07_mqtt_command_out"
+            ],
+            [
+                "w07_debug_rejected"
+            ]
+        ]
+    },
+    {
+        "id": "w07_debug_rejected",
+        "type": "debug",
+        "z": "w07_shelf_tab",
+        "name": "Check rejected",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "w07_comment_place",
+        "type": "comment",
+        "z": "w07_shelf_tab",
+        "name": "3) รับผล Place และบันทึกเหตุการณ์ลง InfluxDB",
+        "info": "",
+        "x": 300,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "w07_mqtt_place_in",
+        "type": "mqtt in",
+        "z": "w07_shelf_tab",
+        "name": "Shelf place feedback",
+        "topic": "dgt/warehouse/shelf/+/feedback/place",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "71ec8461297a712b",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 420,
+        "wires": [
+            [
+                "w07_json_place"
+            ]
+        ]
+    },
+    {
+        "id": "w07_json_place",
+        "type": "json",
+        "z": "w07_shelf_tab",
+        "name": "JSON to object",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 350,
+        "y": 420,
+        "wires": [
+            [
+                "w07_fn_place_event",
+                "w07_debug_place"
+            ]
+        ]
+    },
+    {
+        "id": "w07_fn_place_event",
+        "type": "function",
+        "z": "w07_shelf_tab",
+        "name": "Format placement event",
+        "func": "const data = msg.payload || {};\n\nif (data.request_id) {\n    flow.set(\"pending_\" + data.request_id, null);\n}\n\nconst success = data.status === \"PLACED\";\n\nmsg.payload = [\n    {\n        success: success,\n        status: String(data.status || \"UNKNOWN\"),\n        message: String(data.message || \"NONE\"),\n        item_id: String(data.item_id || \"NONE\"),\n        request_id: String(data.request_id || \"NONE\"),\n        source_timestamp: String(data.timestamp || new Date().toISOString())\n    },\n    {\n        shelf_id: String(data.shelf_id || \"SHELF_A\"),\n        slot_id: String(data.slot_id || \"UNKNOWN\")\n    }\n];\n\nnode.status({\n    fill: success ? \"green\" : \"red\",\n    shape: success ? \"dot\" : \"ring\",\n    text: String(data.status || \"UNKNOWN\")\n});\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 400,
+        "wires": [
+            [
+                "w07_influx_event"
+            ]
+        ]
+    },
+    {
+        "id": "w07_influx_event",
+        "type": "influxdb out",
+        "z": "w07_shelf_tab",
+        "influxdb": "740ef66db5e4881d",
+        "name": "Write placement event",
+        "measurement": "shelf_placement_event",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "idt",
+        "bucket": "dgt_warehouse",
+        "x": 840,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "w07_debug_place",
+        "type": "debug",
+        "z": "w07_shelf_tab",
+        "name": "Place feedback",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "w07_comment_state",
+        "type": "comment",
+        "z": "w07_shelf_tab",
+        "name": "4) รับสถานะทั้ง 6 ช่อง เก็บ Cache สำหรับเลือกช่อง และเขียน InfluxDB",
+        "info": "",
+        "x": 380,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "w07_mqtt_state_in",
+        "type": "mqtt in",
+        "z": "w07_shelf_tab",
+        "name": "Shelf slot states",
+        "topic": "dgt/warehouse/shelf/+/state/slots",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "71ec8461297a712b",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 600,
+        "wires": [
+            [
+                "w07_json_state"
+            ]
+        ]
+    },
+    {
+        "id": "w07_json_state",
+        "type": "json",
+        "z": "w07_shelf_tab",
+        "name": "JSON to object",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 340,
+        "y": 600,
+        "wires": [
+            [
+                "w07_fn_state",
+                "w07_debug_state"
+            ]
+        ]
+    },
+    {
+        "id": "w07_fn_state",
+        "type": "function",
+        "z": "w07_shelf_tab",
+        "name": "Cache + split 6 slots",
+        "func": "const data = msg.payload || {};\n\nif (!Array.isArray(data.slots)) {\n    node.warn(\"state/slots ไม่มี slots array\");\n    return null;\n}\n\nconst shelfId = String(data.shelf_id || \"SHELF_A\");\nflow.set(\"shelf_slots_\" + shelfId, data.slots);\n\nconst sourceTimestamp = String(data.timestamp || new Date().toISOString());\nconst outputMessages = [];\n\nfor (const slot of data.slots) {\n    outputMessages.push({\n        payload: [\n            {\n                state: String(slot.state || \"UNKNOWN\"),\n                item_id: String(slot.item_id || \"NONE\"),\n                free: slot.free === true,\n                source_timestamp: sourceTimestamp\n            },\n            {\n                shelf_id: shelfId,\n                slot_id: String(slot.slot_id || \"UNKNOWN\")\n            }\n        ]\n    });\n}\n\nnode.status({fill: \"green\", shape: \"dot\", text: data.slots.length + \" slots\"});\n\n// ส่งหลาย Message ออกจาก Output เดียว เพื่อเขียน 1 จุดต่อ 1 ช่อง\nreturn [outputMessages];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 570,
+        "y": 580,
+        "wires": [
+            [
+                "w07_influx_state"
+            ]
+        ]
+    },
+    {
+        "id": "w07_influx_state",
+        "type": "influxdb out",
+        "z": "w07_shelf_tab",
+        "influxdb": "740ef66db5e4881d",
+        "name": "Write slot state",
+        "measurement": "shelf_slot_state",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "idt",
+        "bucket": "dgt_warehouse",
+        "x": 820,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "w07_debug_state",
+        "type": "debug",
+        "z": "w07_shelf_tab",
+        "name": "Full shelf state",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "71ec8461297a712b",
+        "type": "mqtt-broker",
+        "name": "EMQX",
+        "broker": "broker.emqx.io",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "740ef66db5e4881d",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "8b3d2f59c5435b13",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-influxdb": "0.7.0"
+        }
+    }
+]
