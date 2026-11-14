@@ -1,0 +1,42 @@
+    if cmd in ("target_sim", "target_both"):
+        if line["waiting_for"] == "start":
+            line["target"] = "both" if cmd == "target_both" else "sim"
+            report(line, "USER", "Target: " + target_text(line))
+        else:
+            report(line, "USER", "Target can only change before Start: press Reset first", "warn")
+    elif cmd in ("mode_step", "mode_full"):
+        line["mode"] = "full" if cmd == "mode_full" else "step"
+        report(line, "USER", "Mode: " + ("full loop" if line["mode"] == "full" else "step-by-step"))
+        if line["mode"] == "full" and line["waiting_for"] == "user":
+            sim_next(line)
+    elif cmd == "start":
+        if line["waiting_for"] != "start":
+            report(line, "USER", "Start ignored: a run is in progress", "warn")
+        else:
+            line.update(step=1, real=[""] * len(ACTIONS), item="", request=None, waiting_for="sim")
+            send(line, SIM_COMMAND, "mode_step")
+            send(line, SIM_COMMAND, "start")
+            mode = "full loop" if line["mode"] == "full" else "step-by-step"
+            report(line, "USER", f"Start ({target_text(line)}, {mode}): simulation step 1 started")
+    elif cmd == "next":
+        if line["waiting_for"] == "user":
+            sim_next(line)
+        else:
+            report(line, "USER", "Next ignored: waiting for " + line["waiting_for"], "warn")
+    elif cmd == "retry":
+        if line["waiting_for"] == "error":
+            report(line, "USER", f"Retry step {line['step']} on the real system")
+            send_real(line, now)
+        else:
+            report(line, "USER", "Retry ignored: nothing failed", "warn")
+    elif cmd == "empty_shelf":
+        if line["waiting_for"] == "start":
+            send(line, SIM_COMMAND, "empty_shelf")
+            report(line, "USER", "Empty shelf sent to the simulation")
+        else:
+            report(line, "USER", "Empty shelf only works while the line is idle", "warn")
+    elif cmd == "reset":
+        if line["waiting_for"] != "start" and line["step"] > RESET_UP_TO_STEP:
+            report(line, "USER", f"Reset only works in steps 1 to {RESET_UP_TO_STEP}: finish the cycle first", "warn")
+            return
+        send(line, SIM_COMMAND, "reset")
