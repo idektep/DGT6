@@ -1,0 +1,607 @@
+[
+  {
+    "id": "a1e0000000000001",
+    "type": "tab",
+    "label": "Warehouse Line",
+    "disabled": false,
+    "info": "Dashboard only: start everything with  python main.py  (DGT6-PY).\nAll MQTT goes through the Python coordinator (Coordinator/line_coordinator.py).\n\nButtons -> dgt/warehouse/line/ui (start, next, retry, reset, empty_shelf, mode_step, mode_full, target_sim, target_both)\nReport  <- dgt/warehouse/line/report (JSON, retained: status, Unity state, real-world steps, activity log)",
+    "env": []
+  },
+  {
+    "id": "a1e0000000000007",
+    "type": "ui-theme",
+    "name": "Warehouse Green",
+    "colors": {
+      "surface": "#2f7a5c",
+      "primary": "#2f7a5c",
+      "bgPage": "#eef1ef",
+      "groupBg": "#ffffff",
+      "groupOutline": "#eef1ef"
+    },
+    "sizes": {
+      "density": "default",
+      "pagePadding": "20px",
+      "groupGap": "18px",
+      "groupBorderRadius": "16px",
+      "widgetGap": "12px"
+    }
+  },
+  {
+    "id": "a1e0000000000002",
+    "type": "ui-page",
+    "name": "Warehouse Line",
+    "ui": "c4593836149510f4",
+    "path": "/line",
+    "icon": "factory",
+    "layout": "grid",
+    "theme": "a1e0000000000007",
+    "breakpoints": [
+      {
+        "name": "Default",
+        "px": 0,
+        "cols": 3
+      },
+      {
+        "name": "Tablet",
+        "px": 576,
+        "cols": 6
+      },
+      {
+        "name": "Small Desktop",
+        "px": 768,
+        "cols": 9
+      },
+      {
+        "name": "Desktop",
+        "px": 1024,
+        "cols": 12
+      }
+    ],
+    "order": 2,
+    "className": "",
+    "visible": "true",
+    "disabled": "false"
+  },
+  {
+    "id": "a1e0000000000003",
+    "type": "ui-group",
+    "name": "Control",
+    "page": "a1e0000000000002",
+    "width": 4,
+    "height": 1,
+    "order": 1,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "a1e0000000000004",
+    "type": "ui-group",
+    "name": "Simulation (Unity)",
+    "page": "a1e0000000000002",
+    "width": 8,
+    "height": 1,
+    "order": 2,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "a1e0000000000006",
+    "type": "ui-group",
+    "name": "Real-world system",
+    "page": "a1e0000000000002",
+    "width": 6,
+    "height": 1,
+    "order": 3,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "a1e0000000000008",
+    "type": "ui-group",
+    "name": "Activity",
+    "page": "a1e0000000000002",
+    "width": 6,
+    "height": 1,
+    "order": 4,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "a1e0000000000005",
+    "type": "mqtt-broker",
+    "name": "broker.emqx.io",
+    "broker": "broker.emqx.io",
+    "port": "1883",
+    "clientid": "",
+    "autoConnect": true,
+    "usetls": false,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "autoUnsubscribe": true,
+    "birthTopic": "",
+    "birthQos": "0",
+    "birthRetain": "false",
+    "birthPayload": "",
+    "birthMsg": {},
+    "closeTopic": "",
+    "closeQos": "0",
+    "closeRetain": "false",
+    "closePayload": "",
+    "closeMsg": {},
+    "willTopic": "",
+    "willQos": "0",
+    "willRetain": "false",
+    "willPayload": "",
+    "willMsg": {},
+    "userProps": "",
+    "sessionExpiry": ""
+  },
+  {
+    "id": "a1e0000000000045",
+    "type": "ui-template",
+    "z": "a1e0000000000001",
+    "group": "",
+    "page": "a1e0000000000002",
+    "ui": "",
+    "name": "Page style",
+    "order": 0,
+    "width": 0,
+    "height": 0,
+    "head": "",
+    "format": "/* Warehouse Line: minimal green style */\n.v-application { font-family: \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif; color: #24332c; }\n.v-app-bar { background: #2f7a5c !important; color: #fff !important; box-shadow: none !important; }\n.v-app-bar .v-toolbar-title, .v-app-bar .v-btn { color: #fff !important; }\n.v-navigation-drawer { background: #2f7a5c !important; color: #e8f3ee !important; border: none !important; }\n.v-navigation-drawer .v-list-item { color: #e8f3ee !important; border-radius: 10px; margin: 2px 10px; }\n.v-navigation-drawer .v-list-item--active { background: rgba(255, 255, 255, 0.16) !important; color: #fff !important; }\n.v-navigation-drawer .v-list-item--active .v-list-item__overlay { opacity: 0 !important; }\n.nrdb-ui-group > .v-card { border: none !important; box-shadow: 0 1px 3px rgba(36, 51, 44, 0.06) !important; }\n.nrdb-ui-group .v-card-title, .nrdb-ui-group h4 { font-weight: 600 !important; font-size: 15px !important; color: #24332c; }\n.nrdb-ui-button .v-btn { border-radius: 999px !important; text-transform: none !important; letter-spacing: 0 !important;\n  box-shadow: none !important; font-weight: 600 !important; }\n.nrdb-ui-radio-group label, .nrdb-ui-radio-group .v-label { font-size: 14px; }\n",
+    "storeOutMessages": true,
+    "passthru": true,
+    "resendOnRefresh": true,
+    "templateScope": "page:style",
+    "className": "",
+    "x": 130,
+    "y": 520,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "a1e0000000000042",
+    "type": "ui-template",
+    "z": "a1e0000000000001",
+    "group": "a1e0000000000003",
+    "page": "",
+    "ui": "",
+    "name": "Status",
+    "order": 1,
+    "width": "4",
+    "height": "3",
+    "head": "",
+    "format": "<template>\n  <div class=\"wl-status status\">\n    <div class=\"row\">\n      <span :class=\"['dot', online ? 'on' : 'off']\"></span>\n      <span class=\"label\">{{ online ? 'Coordinator online' : 'Coordinator offline' }}</span>\n      <span v-if=\"online\" class=\"sub\">{{ r.target === 'both' ? 'Sim + real world' : 'Sim only' }} &middot; {{ r.mode === 'full' ? 'Full loop' : 'Step-by-step' }}</span>\n    </div>\n    <div v-if=\"online && r.sim\" class=\"shelf\">Shelf <b>{{ r.sim.shelfStored }}</b> / {{ r.sim.shelfCapacity }} boxes</div>\n    <div v-if=\"online\" class=\"waiting\">\n      <div class=\"caption\">Waiting for</div>\n      <div :class=\"['pill', r.waitingFor]\">{{ waitingText }}</div>\n    </div>\n    <div v-else class=\"hint\">Start it with <code>python main.py</code></div>\n  </div>\n</template>\n\n<script>\nexport default {\n  computed: {\n    r () { return (this.msg && this.msg.payload) || {} },\n    online () { return this.r.coordinator === 'online' },\n    waitingText () {\n      const p = this.r\n      return {\n        start: 'You: press Start',\n        sim: 'Simulation, step ' + p.step,\n        real: 'Real world, step ' + p.step,\n        user: 'You: press Next for step ' + (p.step + 1),\n        error: p.step <= 4 ? 'You: Retry step or Reset' : 'You: Retry step',\n      }[p.waitingFor]\n    }\n  }\n}\n</script>\n\n<style>\n.wl-status .status { display: flex; flex-direction: column; gap: 10px; }\n.wl-status .row { display: flex; align-items: center; gap: 8px; }\n.wl-status .dot { width: 9px; height: 9px; border-radius: 50%; background: #c9cfcb; }\n.wl-status .dot.on { background: #3fb27f; box-shadow: 0 0 0 3px #d7ebe2; }\n.wl-status .dot.off { background: #e07a6a; box-shadow: 0 0 0 3px #f8e1dc; }\n.wl-status .label { font-weight: 600; }\n.wl-status .sub { margin-left: auto; color: #8a968f; font-size: 13px; }\n.wl-status .caption { font-size: 12px; color: #8a968f; margin-bottom: 4px; }\n.wl-status .pill { display: inline-block; padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: 14px; background: #d7ebe2; color: #2f7a5c; }\n.wl-status .pill.sim { background: #fdf0d9; color: #b7791f; }\n.wl-status .pill.real { background: #e9e4f5; color: #5b4a8b; }\n.wl-status .pill.error { background: #fbe3df; color: #c0392b; }\n.wl-status .shelf { font-size: 13px; color: #5d6b64; }\n.wl-status .hint { color: #8a968f; font-size: 13px; }\n.wl-status code { background: #eef1ef; padding: 1px 6px; border-radius: 6px; }\n</style>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 720,
+    "y": 380,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "a1e0000000000016",
+    "type": "ui-radio-group",
+    "z": "a1e0000000000001",
+    "group": "a1e0000000000003",
+    "name": "Target",
+    "label": "Control",
+    "order": 2,
+    "width": "4",
+    "height": "2",
+    "columns": 1,
+    "passthru": false,
+    "options": [
+      {
+        "label": "Simulation only",
+        "value": "target_sim",
+        "type": "str"
+      },
+      {
+        "label": "Simulation + real world",
+        "value": "target_both",
+        "type": "str"
+      }
+    ],
+    "payload": "",
+    "topic": "ui",
+    "topicType": "str",
+    "className": "",
+    "x": 120,
+    "y": 60,
+    "wires": [
+      [
+        "a1e0000000000014"
+      ]
+    ]
+  },
+  {
+    "id": "a1e0000000000010",
+    "type": "ui-radio-group",
+    "z": "a1e0000000000001",
+    "group": "a1e0000000000003",
+    "name": "Mode",
+    "label": "Mode",
+    "order": 3,
+    "width": "4",
+    "height": "2",
+    "columns": 1,
+    "passthru": false,
+    "options": [
+      {
+        "label": "Step-by-step",
+        "value": "mode_step",
+        "type": "str"
+      },
+      {
+        "label": "Full loop (steps 1 to 8)",
+        "value": "mode_full",
+        "type": "str"
+      }
+    ],
+    "payload": "",
+    "topic": "ui",
+    "topicType": "str",
+    "className": "",
+    "x": 120,
+    "y": 120,
+    "wires": [
+      [
+        "a1e0000000000014"
+      ]
+    ]
+  },
+  {
+    "id": "a1e0000000000011",
+    "type": "ui-button",
+    "z": "a1e0000000000001",
+    "group": "a1e0000000000003",
+    "name": "Start",
+    "label": "Start",
+    "order": 4,
+    "width": "2",
+    "height": "1",
+    "emulateClick": false,
+    "tooltip": "",
+    "color": "",
+    "bgcolor": "",
+    "className": "",
+    "icon": "play",
+    "iconPosition": "left",
+    "payload": "start",
+    "payloadType": "str",
+    "topic": "ui",
+    "topicType": "str",
+    "buttonColor": "#2f7a5c",
+    "textColor": "#ffffff",
+    "iconColor": "#ffffff",
+    "enableClick": true,
+    "enablePointerdown": false,
+    "pointerdownPayload": "",
+    "pointerdownPayloadType": "str",
+    "enablePointerup": false,
+    "pointerupPayload": "",
+    "pointerupPayloadType": "str",
+    "x": 120,
+    "y": 180,
+    "wires": [
+      [
+        "a1e0000000000014"
+      ]
+    ]
+  },
+  {
+    "id": "a1e0000000000012",
+    "type": "ui-button",
+    "z": "a1e0000000000001",
+    "group": "a1e0000000000003",
+    "name": "Next",
+    "label": "Next",
+    "order": 5,
+    "width": "2",
+    "height": "1",
+    "emulateClick": false,
+    "tooltip": "",
+    "color": "",
+    "bgcolor": "",
+    "className": "",
+    "icon": "skip-next",
+    "iconPosition": "left",
+    "payload": "next",
+    "payloadType": "str",
+    "topic": "ui",
+    "topicType": "str",
+    "buttonColor": "#d7ebe2",
+    "textColor": "#2f7a5c",
+    "iconColor": "#2f7a5c",
+    "enableClick": true,
+    "enablePointerdown": false,
+    "pointerdownPayload": "",
+    "pointerdownPayloadType": "str",
+    "enablePointerup": false,
+    "pointerupPayload": "",
+    "pointerupPayloadType": "str",
+    "x": 120,
+    "y": 220,
+    "wires": [
+      [
+        "a1e0000000000014"
+      ]
+    ]
+  },
+  {
+    "id": "a1e0000000000015",
+    "type": "ui-button",
+    "z": "a1e0000000000001",
+    "group": "a1e0000000000003",
+    "name": "Retry",
+    "label": "Retry",
+    "order": 6,
+    "width": "2",
+    "height": "1",
+    "emulateClick": false,
+    "tooltip": "",
+    "color": "",
+    "bgcolor": "",
+    "className": "",
+    "icon": "replay",
+    "iconPosition": "left",
+    "payload": "retry",
+    "payloadType": "str",
+    "topic": "ui",
+    "topicType": "str",
+    "buttonColor": "#f2a93b",
+    "textColor": "#ffffff",
+    "iconColor": "#ffffff",
+    "enableClick": true,
+    "enablePointerdown": false,
+    "pointerdownPayload": "",
+    "pointerdownPayloadType": "str",
+    "enablePointerup": false,
+    "pointerupPayload": "",
+    "pointerupPayloadType": "str",
+    "x": 120,
+    "y": 260,
+    "wires": [
+      [
+        "a1e0000000000014"
+      ]
+    ]
+  },
+  {
+    "id": "a1e0000000000013",
+    "type": "ui-button",
+    "z": "a1e0000000000001",
+    "group": "a1e0000000000003",
+    "name": "Reset",
+    "label": "Reset",
+    "order": 7,
+    "width": "2",
+    "height": "1",
+    "emulateClick": false,
+    "tooltip": "",
+    "color": "",
+    "bgcolor": "",
+    "className": "",
+    "icon": "restore",
+    "iconPosition": "left",
+    "payload": "reset",
+    "payloadType": "str",
+    "topic": "ui",
+    "topicType": "str",
+    "buttonColor": "#f6e3df",
+    "textColor": "#c0392b",
+    "iconColor": "#c0392b",
+    "enableClick": true,
+    "enablePointerdown": false,
+    "pointerdownPayload": "",
+    "pointerdownPayloadType": "str",
+    "enablePointerup": false,
+    "pointerupPayload": "",
+    "pointerupPayloadType": "str",
+    "x": 120,
+    "y": 300,
+    "wires": [
+      [
+        "a1e0000000000014"
+      ]
+    ]
+  },
+  {
+    "id": "a1e0000000000017",
+    "type": "ui-button",
+    "z": "a1e0000000000001",
+    "group": "a1e0000000000003",
+    "name": "Empty shelf",
+    "label": "Empty shelf",
+    "order": 8,
+    "width": "4",
+    "height": "1",
+    "emulateClick": false,
+    "tooltip": "",
+    "color": "",
+    "bgcolor": "",
+    "className": "",
+    "icon": "delete-sweep",
+    "iconPosition": "left",
+    "payload": "empty_shelf",
+    "payloadType": "str",
+    "topic": "ui",
+    "topicType": "str",
+    "buttonColor": "#eef1ef",
+    "textColor": "#5d6b64",
+    "iconColor": "#5d6b64",
+    "enableClick": true,
+    "enablePointerdown": false,
+    "pointerdownPayload": "",
+    "pointerdownPayloadType": "str",
+    "enablePointerup": false,
+    "pointerupPayload": "",
+    "pointerupPayloadType": "str",
+    "x": 120,
+    "y": 340,
+    "wires": [
+      [
+        "a1e0000000000014"
+      ]
+    ]
+  },
+  {
+    "id": "a1e0000000000014",
+    "type": "mqtt out",
+    "z": "a1e0000000000001",
+    "name": "Buttons to coordinator",
+    "topic": "dgt/warehouse/line/ui",
+    "qos": "1",
+    "retain": "false",
+    "respTopic": "",
+    "contentType": "",
+    "userProps": "",
+    "correl": "",
+    "expiry": "",
+    "broker": "a1e0000000000005",
+    "x": 380,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "a1e0000000000040",
+    "type": "mqtt in",
+    "z": "a1e0000000000001",
+    "name": "Report from coordinator",
+    "topic": "dgt/warehouse/line/report",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "a1e0000000000005",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 160,
+    "y": 420,
+    "wires": [
+      [
+        "a1e0000000000041"
+      ]
+    ]
+  },
+  {
+    "id": "a1e0000000000041",
+    "type": "function",
+    "z": "a1e0000000000001",
+    "name": "Report to widgets",
+    "func": "// Coordinator report -> the three report widgets (output 1) and the two selectors (outputs 2 and 3)\nconst r = msg.payload;\nif (typeof r !== 'object') return null;\nif (r.coordinator !== 'online') return [msg, null, null];\nreturn [msg, { payload: 'target_' + r.target }, { payload: 'mode_' + r.mode }];",
+    "outputs": 3,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 420,
+    "wires": [
+      [
+        "a1e0000000000042",
+        "a1e0000000000043",
+        "a1e0000000000044",
+        "a1e0000000000022"
+      ],
+      [
+        "a1e0000000000016"
+      ],
+      [
+        "a1e0000000000010"
+      ]
+    ]
+  },
+  {
+    "id": "a1e0000000000043",
+    "type": "ui-template",
+    "z": "a1e0000000000001",
+    "group": "a1e0000000000006",
+    "page": "",
+    "ui": "",
+    "name": "Real-world steps",
+    "order": 1,
+    "width": "6",
+    "height": "5",
+    "head": "",
+    "format": "<template>\n  <div class=\"wl-real\">\n    <div class=\"tiles\">\n      <div v-for=\"(action, i) in actions\" :key=\"i\" :class=\"['tile', state(i)]\">\n        <div class=\"num\">{{ i + 1 }}</div>\n        <div class=\"act\">{{ action.split('_').join(' ') }}</div>\n        <div class=\"st\">{{ state(i) }}</div>\n      </div>\n    </div>\n    <div class=\"note\">{{ note }}</div>\n  </div>\n</template>\n\n<script>\nexport default {\n  computed: {\n    r () { return (this.msg && this.msg.payload) || {} },\n    actions () { return this.r.actions || ['conveyor_to_arm2', 'arm2_pick', 'arm2_place_on_agv', 'agv_to_arm1',\n      'arm1_pick', 'arm1_place_on_cartesian', 'cartesian_store', 'agv_cartesian_home'] },\n    note () {\n      if (this.r.coordinator !== 'online') return 'Coordinator offline'\n      return this.r.target === 'both' ? 'Each step runs here after the simulation finishes it' : 'Not used: target is simulation only'\n    }\n  },\n  methods: {\n    state (i) {\n      if (this.r.coordinator !== 'online' || this.r.target !== 'both') return 'off'\n      return (this.r.real || [])[i] || 'pending'\n    }\n  }\n}\n</script>\n\n<style>\n.wl-real .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }\n.wl-real .tile { background: #f5f7f6; border-radius: 12px; padding: 10px 12px; }\n.wl-real .num { font-size: 26px; font-weight: 700; color: #2f7a5c; line-height: 1.1; }\n.wl-real .act { font-size: 12px; color: #5d6b64; min-height: 32px; }\n.wl-real .st { display: inline-block; margin-top: 6px; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 700;\n      text-transform: uppercase; background: #e4e9e6; color: #6f7c75; }\n.wl-real .tile.sent .st, .wl-real .tile.running .st { background: #fdf0d9; color: #b7791f; }\n.wl-real .tile.done { background: #e8f4ee; }\n.wl-real .tile.done .st { background: #2f7a5c; color: #fff; }\n.wl-real .tile.error { background: #fbe9e6; }\n.wl-real .tile.error .num { color: #c0392b; }\n.wl-real .tile.error .st { background: #c0392b; color: #fff; }\n.wl-real .tile.off { opacity: 0.45; }\n.wl-real .note { margin-top: 10px; font-size: 12px; color: #8a968f; }\n</style>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 720,
+    "y": 420,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "a1e0000000000044",
+    "type": "ui-template",
+    "z": "a1e0000000000001",
+    "group": "a1e0000000000008",
+    "page": "",
+    "ui": "",
+    "name": "Activity log",
+    "order": 1,
+    "width": "6",
+    "height": "7",
+    "head": "",
+    "format": "<template>\n  <div class=\"wl-log log\">\n    <div v-for=\"(e, i) in entries\" :key=\"i\" :class=\"['row', e.level]\">\n      <span class=\"t\">{{ e.time }}</span>\n      <span :class=\"['src', e.source]\">{{ e.source }}</span>\n      <span class=\"txt\">{{ e.text }}</span>\n    </div>\n    <div v-if=\"!entries.length\" class=\"hint\">No activity yet.</div>\n  </div>\n</template>\n\n<script>\nexport default {\n  computed: {\n    entries () { return (this.msg && this.msg.payload && this.msg.payload.log) || [] }\n  }\n}\n</script>\n\n<style>\n.wl-log .log { max-height: 300px; overflow-y: auto; font-size: 13px; }\n.wl-log .row { display: flex; gap: 10px; align-items: baseline; padding: 7px 2px; border-bottom: 1px solid #f0f2f1; }\n.wl-log .t { color: #a3ada7; font-variant-numeric: tabular-nums; font-size: 12px; }\n.wl-log .src { min-width: 92px; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 999px;\n       text-align: center; background: #eef1ef; color: #5d6b64; }\n.wl-log .src.SIM { background: #fdf0d9; color: #b7791f; }\n.wl-log .src.REAL { background: #e9e4f5; color: #5b4a8b; }\n.wl-log .src.USER { background: #d7ebe2; color: #2f7a5c; }\n.wl-log .txt { flex: 1; }\n.wl-log .row.ok .txt { color: #2f7a5c; }\n.wl-log .row.warn .txt { color: #b7791f; }\n.wl-log .row.error .txt { color: #c0392b; font-weight: 600; }\n.wl-log .hint { color: #8a968f; padding: 6px 0; }\n</style>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 720,
+    "y": 460,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "a1e0000000000022",
+    "type": "ui-template",
+    "z": "a1e0000000000001",
+    "group": "a1e0000000000004",
+    "page": "",
+    "ui": "",
+    "name": "Simulation monitor",
+    "order": 1,
+    "width": "8",
+    "height": "10",
+    "head": "",
+    "format": "<template>\n  <div class=\"wl-sim\">\n  <div v-if=\"!s\" class=\"hint\">Waiting for Unity (through the coordinator): press Play in the W07_Shelf_Standalone scene.</div>\n  <div v-else>\n    <div class=\"head\">\n      <span :class=\"['phase', s.phase]\">{{ s.phase }}</span>\n      <span class=\"stamp\">updated {{ s.timestamp }}</span>\n    </div>\n    <div class=\"steps\">\n      <div v-for=\"(name, i) in s.steps\" :key=\"i\" :class=\"['step', status(i + 1)]\">\n        <span class=\"num\">{{ i + 1 }}</span>\n        <span class=\"name\">{{ name }}</span>\n        <span class=\"time\" v-if=\"s.stepSeconds[i] > 0\">{{ s.stepSeconds[i].toFixed(1) }} s</span>\n      </div>\n    </div>\n    <div class=\"state\">{{ s.state }}</div>\n  </div>\n  </div>\n</template>\n\n<script>\nexport default {\n  computed: {\n    s () { return (this.msg && this.msg.payload && this.msg.payload.sim) || null }\n  },\n  methods: {\n    status (n) {\n      const p = this.s\n      // idle with a step number = the whole cycle has finished\n      if (n < p.step || (n === p.step && (p.phase === 'done' || p.phase === 'idle'))) return 'done'\n      if (n === p.step && p.phase === 'running') return 'running'\n      if (n === p.step && p.phase === 'waiting') return 'waiting'\n      return 'pending'\n    }\n  }\n}\n</script>\n\n<style>\n.wl-sim .hint { color: #8a968f; padding: 8px 0; }\n.wl-sim .head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }\n.wl-sim .phase { padding: 3px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase;\n         background: #e4e9e6; color: #6f7c75; }\n.wl-sim .phase.running { background: #fdf0d9; color: #b7791f; }\n.wl-sim .phase.waiting { background: #d7ebe2; color: #2f7a5c; }\n.wl-sim .phase.done { background: #2f7a5c; color: #fff; }\n.wl-sim .phase.resetting { background: #e9e4f5; color: #5b4a8b; }\n.wl-sim .phase.offline { background: #fbe3df; color: #c0392b; }\n.wl-sim .stamp { margin-left: auto; font-size: 12px; color: #a3ada7; }\n.wl-sim .steps { display: flex; flex-direction: column; gap: 6px; }\n.wl-sim .step { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 10px; background: #f5f7f6; color: #6f7c75; }\n.wl-sim .num { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700;\n       background: #e4e9e6; color: #6f7c75; }\n.wl-sim .name { flex: 1; }\n.wl-sim .time { font-size: 12px; font-variant-numeric: tabular-nums; }\n.wl-sim .step.done { background: #e8f4ee; color: #24332c; }\n.wl-sim .step.done .num { background: #2f7a5c; color: #fff; }\n.wl-sim .step.running { background: #fdf0d9; color: #24332c; font-weight: 600; }\n.wl-sim .step.running .num { background: #f2a93b; color: #fff; }\n.wl-sim .step.waiting { background: #fff; color: #24332c; box-shadow: inset 0 0 0 2px #d7ebe2; font-weight: 600; }\n.wl-sim .step.waiting .num { background: #d7ebe2; color: #2f7a5c; }\n.wl-sim .state { margin-top: 12px; font-size: 13px; color: #5d6b64; }\n</style>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 720,
+    "y": 500,
+    "wires": [
+      []
+    ]
+  }
+]

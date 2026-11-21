@@ -1,0 +1,594 @@
+[
+  {
+    "id": "d7a0000000000001",
+    "type": "tab",
+    "label": "Digital Twin",
+    "disabled": false,
+    "env": [],
+    "info": "Start everything with  python twin.py  (dgt_py).\nRun panel + Machines -> dgt/twin/ui as {cmd, value}: start, next, stop, mode, shelf, check, lock\nReport <- dgt/twin/report (JSON, retained): devices, work, sequence (locked values)\nManual panels go straight to the device topics; arm Pick/Place runs in 'Arm pick/place sequence'."
+  },
+  {
+    "id": "d7a0000000000002",
+    "type": "ui-theme",
+    "name": "Twin operator",
+    "colors": {
+      "surface": "#1D2830",
+      "primary": "#2A5C88",
+      "bgPage": "#E6E9EC",
+      "groupBg": "#F8F9FA",
+      "groupOutline": "#CDD3D8"
+    },
+    "sizes": {
+      "density": "default",
+      "pagePadding": "18px",
+      "groupGap": "14px",
+      "groupBorderRadius": "8px",
+      "widgetGap": "10px"
+    }
+  },
+  {
+    "id": "d7a0000000000003",
+    "type": "ui-page",
+    "name": "Digital Twin",
+    "ui": "c4593836149510f4",
+    "path": "/twin",
+    "icon": "robot-industrial",
+    "layout": "grid",
+    "theme": "d7a0000000000002",
+    "order": 3,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "breakpoints": [
+      {
+        "name": "Default",
+        "px": 0,
+        "cols": 3
+      },
+      {
+        "name": "Tablet",
+        "px": 576,
+        "cols": 6
+      },
+      {
+        "name": "Small Desktop",
+        "px": 768,
+        "cols": 9
+      },
+      {
+        "name": "Desktop",
+        "px": 1024,
+        "cols": 12
+      }
+    ]
+  },
+  {
+    "id": "d7a0000000000004",
+    "type": "ui-group",
+    "name": "Run",
+    "page": "d7a0000000000003",
+    "width": 4,
+    "height": 1,
+    "order": 1,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "d7a0000000000006",
+    "type": "ui-group",
+    "name": "Cycle progress",
+    "page": "d7a0000000000003",
+    "width": 8,
+    "height": 1,
+    "order": 2,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "d7a0000000000005",
+    "type": "ui-group",
+    "name": "Machines",
+    "page": "d7a0000000000003",
+    "width": 12,
+    "height": 1,
+    "order": 3,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "d7a0000000000031",
+    "type": "ui-group",
+    "name": "Manual conveyor",
+    "page": "d7a0000000000003",
+    "width": 4,
+    "height": 1,
+    "order": 4,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "d7a0000000000030",
+    "type": "ui-group",
+    "name": "Manual AGV",
+    "page": "d7a0000000000003",
+    "width": 8,
+    "height": 1,
+    "order": 5,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "d7a0000000000034",
+    "type": "ui-group",
+    "name": "Manual arm 2",
+    "page": "d7a0000000000003",
+    "width": 6,
+    "height": 1,
+    "order": 6,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "d7a0000000000033",
+    "type": "ui-group",
+    "name": "Manual arm 1",
+    "page": "d7a0000000000003",
+    "width": 6,
+    "height": 1,
+    "order": 7,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "d7a0000000000007",
+    "type": "mqtt-broker",
+    "name": "broker.emqx.io (twin)",
+    "broker": "broker.emqx.io",
+    "port": "1883",
+    "clientid": "",
+    "autoConnect": true,
+    "usetls": false,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "autoUnsubscribe": true,
+    "birthTopic": "",
+    "birthQos": "0",
+    "birthRetain": "false",
+    "birthPayload": "",
+    "birthMsg": {},
+    "closeTopic": "",
+    "closeQos": "0",
+    "closeRetain": "false",
+    "closePayload": "",
+    "closeMsg": {},
+    "willTopic": "",
+    "willQos": "0",
+    "willRetain": "false",
+    "willPayload": "",
+    "willMsg": {},
+    "userProps": "",
+    "sessionExpiry": ""
+  },
+  {
+    "id": "d7a0000000000020",
+    "type": "ui-template",
+    "z": "d7a0000000000001",
+    "group": "",
+    "page": "d7a0000000000003",
+    "ui": "",
+    "name": "Page style",
+    "order": 0,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600&display=swap');\n\n/* Digital twin operator screen. Colour means machine state only:\n   run = running / ready, warn = needs the operator, alarm = fault or stop, steel = selection / current step. */\n:root {\n  --tw-canvas: #E6E9EC; --tw-panel: #F8F9FA; --tw-ink: #1D2830; --tw-muted: #66727C; --tw-line: #CDD3D8;\n  --tw-steel: #2A5C88; --tw-steel-soft: #DCE6EF; --tw-run: #1F8A5B; --tw-warn: #B97A0B; --tw-warn-soft: #F6ECD6;\n  --tw-alarm: #C4342C; --tw-alarm-soft: #F6DEDC;\n  --tw-font: \"Barlow\", \"Segoe UI\", system-ui, sans-serif;\n  --tw-head: \"Barlow Semi Condensed\", \"Barlow\", \"Segoe UI\", system-ui, sans-serif;\n}\n.v-application { font-family: var(--tw-font) !important; color: var(--tw-ink); background: var(--tw-canvas) !important; }\n.v-app-bar { background: var(--tw-ink) !important; color: #fff !important; box-shadow: none !important; }\n.v-app-bar .v-toolbar-title { font-family: var(--tw-head); font-weight: 600; letter-spacing: 0; }\n.nrdb-ui-group > .v-card { background: var(--tw-panel) !important; border: 1px solid var(--tw-line) !important;\n  border-radius: 8px !important; box-shadow: none !important; }\n.nrdb-ui-group .v-card-title, .nrdb-ui-group h4 { font-family: var(--tw-head) !important; font-weight: 600 !important;\n  font-size: 18px !important; color: var(--tw-ink); letter-spacing: 0 !important; }\n\n/* shared controls */\n.tw { font-size: 15px; line-height: 1.45; color: var(--tw-ink); }\n.tw *, .tw *::before, .tw *::after { box-sizing: border-box; }\n.tw button { font: 600 15px/1 var(--tw-font); border: 1px solid var(--tw-line); background: #fff; color: var(--tw-ink);\n  border-radius: 4px; padding: 9px 14px; cursor: pointer; }\n.tw button:hover:not(:disabled) { border-color: var(--tw-muted); }\n.tw button:disabled { opacity: .45; cursor: not-allowed; }\n.tw button:focus-visible, .tw input:focus-visible { outline: 2px solid var(--tw-steel); outline-offset: 2px; }\n.tw button.primary { background: var(--tw-steel); border-color: var(--tw-steel); color: #fff; }\n.tw button.stop { background: var(--tw-alarm); border-color: var(--tw-alarm); color: #fff; }\n.tw button.on { background: var(--tw-steel-soft); border-color: var(--tw-steel); color: var(--tw-steel); }\n.tw button.on:disabled { opacity: 1; }   /* the chosen shelf stays readable while a cycle runs */\n.tw input { font: 500 15px var(--tw-font); width: 100%; min-width: 0; padding: 7px 8px; border: 1px solid var(--tw-line);\n  border-radius: 4px; background: #fff; color: var(--tw-ink); font-variant-numeric: tabular-nums; }\n.tw label { font-size: 13px; color: var(--tw-muted); display: flex; flex-direction: column; gap: 3px; }\n.tw .muted { color: var(--tw-muted); font-size: 13px; }\n.tw code { font-family: inherit; background: var(--tw-canvas); padding: 1px 6px; border-radius: 4px; }\n.tw .say { font-size: 13px; padding: 7px 10px; border-radius: 4px; background: var(--tw-canvas); color: var(--tw-ink); }\n.tw .say.ok { color: var(--tw-run); }\n.tw .say.warn { background: var(--tw-warn-soft); color: #7A5206; }\n.tw .say.error { background: var(--tw-alarm-soft); color: var(--tw-alarm); font-weight: 600; }\n.tw .lockbox { border-top: 1px solid var(--tw-line); padding-top: 12px; margin-top: 4px; display: flex; flex-direction: column; gap: 8px; }\n.tw .lockbox p { margin: 0; font-size: 13px; color: var(--tw-muted); }\n.tw .lockbox b { color: var(--tw-ink); font-weight: 600; }\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "page:style",
+    "className": "",
+    "x": 130,
+    "y": 40,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "d7a000000000000a",
+    "type": "mqtt in",
+    "z": "d7a0000000000001",
+    "name": "Report from coordinator",
+    "topic": "dgt/twin/report",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "d7a0000000000007",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 160,
+    "y": 120,
+    "wires": [
+      [
+        "d7a000000000000b"
+      ]
+    ]
+  },
+  {
+    "id": "d7a000000000000b",
+    "type": "function",
+    "z": "d7a0000000000001",
+    "name": "Report to panels",
+    "func": "// Coordinator report -> every panel (they read what they need)\nreturn typeof msg.payload === 'object' ? msg : null;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 380,
+    "y": 120,
+    "wires": [
+      [
+        "d7a0000000000024",
+        "d7a0000000000022",
+        "d7a0000000000021",
+        "d7a0000000000040",
+        "d7a0000000000043",
+        "d7a0000000000044"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000024",
+    "type": "ui-template",
+    "z": "d7a0000000000001",
+    "group": "d7a0000000000004",
+    "page": "",
+    "ui": "",
+    "name": "Run",
+    "order": 1,
+    "width": "4",
+    "height": "8",
+    "head": "",
+    "format": "<template>\n  <div class=\"tw tw-run\">\n    <p v-if=\"!online\" class=\"say warn\">The coordinator is offline. Start it on the PC with <code>python twin.py</code>.</p>\n    <div>\n      <div class=\"cap\" id=\"tw-shelf-cap\">Store the box on</div>\n      <div class=\"rack\" role=\"radiogroup\" aria-labelledby=\"tw-shelf-cap\">\n        <button v-for=\"n in 6\" :key=\"n\" role=\"radio\" :aria-checked=\"w.shelf === n\" :class=\"{ on: w.shelf === n }\"\n                :disabled=\"!online || busy\" @click=\"say('shelf', n)\">Shelf {{ n }}</button>\n      </div>\n    </div>\n    <div>\n      <div class=\"cap\" id=\"tw-mode-cap\">How the cycle runs</div>\n      <div class=\"seg\" role=\"radiogroup\" aria-labelledby=\"tw-mode-cap\">\n        <button role=\"radio\" :aria-checked=\"w.mode === 'step'\" :class=\"{ on: w.mode === 'step' }\" :disabled=\"!online\"\n                @click=\"say('mode', 'step')\">Step by step</button>\n        <button role=\"radio\" :aria-checked=\"w.mode === 'full'\" :class=\"{ on: w.mode === 'full' }\" :disabled=\"!online\"\n                @click=\"say('mode', 'full')\">Full cycle</button>\n      </div>\n      <p class=\"muted\">{{ w.mode === 'full' ? 'Runs all 8 steps without pausing.' : 'Pauses after each step until you press Next step.' }}</p>\n    </div>\n    <div class=\"go\">\n      <button class=\"primary\" :disabled=\"!canStart\" @click=\"say('start')\">Start cycle</button>\n      <button :disabled=\"w.waitingFor !== 'user'\" @click=\"say('next')\">Next step</button>\n    </div>\n    <button class=\"stop big\" :disabled=\"!online\" @click=\"say('stop')\">Stop all machines</button>\n  </div>\n</template>\n\n<script>\nexport default {\n  computed: {\n    r () { return (this.msg && this.msg.payload) || {} },\n    online () { return this.r.coordinator === 'online' },\n    w () { return (this.online && this.r.work) || { shelf: 0, mode: '', waitingFor: '' } },\n    busy () { return this.w.waitingFor === 'device' },\n    canStart () { return this.online && ['start', 'error', 'stopped'].includes(this.w.waitingFor) }\n  },\n  methods: {\n    say (topic, payload) { this.send({ topic, payload: payload === undefined ? '' : payload }) }\n  }\n}\n</script>\n\n<style>\n.tw-run { display: flex; flex-direction: column; gap: 18px; }\n.tw-run .cap { font-size: 13px; color: var(--tw-muted); margin-bottom: 6px; }\n.tw-run .rack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }\n.tw-run .seg { display: grid; grid-template-columns: 1fr 1fr; }\n.tw-run .seg button:first-child { border-radius: 4px 0 0 4px; }\n.tw-run .seg button:last-child { border-radius: 0 4px 4px 0; margin-left: -1px; }\n.tw-run .seg button.on { position: relative; z-index: 1; }\n.tw-run .muted { margin: 6px 0 0; }\n.tw-run .go { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }\n.tw-run .go button { padding: 12px 14px; }\n.tw-run button.big { padding: 16px; font-size: 17px; }\n</style>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 640,
+    "y": 80,
+    "wires": [
+      [
+        "d7a0000000000008"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000022",
+    "type": "ui-template",
+    "z": "d7a0000000000001",
+    "group": "d7a0000000000006",
+    "page": "",
+    "ui": "",
+    "name": "Cycle progress",
+    "order": 1,
+    "width": "8",
+    "height": "8",
+    "head": "",
+    "format": "<template>\n  <div class=\"tw tw-cycle\">\n    <template v-if=\"w\">\n      <div class=\"now\">\n        <h3 :class=\"['ask', w.waitingFor]\">{{ headline }}</h3>\n        <span class=\"count\">{{ w.cycles === 1 ? '1 box stored' : w.cycles + ' boxes stored' }} this session</span>\n      </div>\n      <p v-if=\"doing\" class=\"cmd\">{{ w.waitingFor === 'error' ? 'Stuck at' : 'Now' }}: {{ doing }}</p>\n      <p v-if=\"w.message && w.message.text && w.message.level !== 'info'\" :class=\"['say', w.message.level]\">\n        {{ w.message.time }}&nbsp; {{ w.message.text }}</p>\n      <ol class=\"line\">\n        <li v-for=\"(s, i) in w.steps\" :key=\"i\" :class=\"['node', s.status || 'pending', { current: i + 1 === w.step }]\"\n            :aria-current=\"i + 1 === w.step ? 'step' : null\">\n          <span class=\"dot\">{{ i + 1 }}</span>\n          <span class=\"who\">{{ label(i).who }}</span>\n          <span class=\"what\">{{ label(i).what }}</span>\n          <span class=\"st\">{{ statusText(s.status) }}</span>\n        </li>\n      </ol>\n    </template>\n    <p v-else class=\"say warn\">The coordinator is offline, so there is no cycle to show. Start it on the PC with <code>python twin.py</code>.</p>\n  </div>\n</template>\n\n<script>\nexport default {\n  computed: {\n    w () {\n      const p = (this.msg && this.msg.payload) || {}\n      return p.coordinator === 'online' ? p.work : null\n    },\n    headline () {\n      const w = this.w\n      const step = this.label(w.step - 1)\n      const what = step.what ? step.what[0].toLowerCase() + step.what.slice(1) : ''\n      return {\n        start: 'Ready. Choose a shelf and start a cycle.',\n        device: 'Step ' + w.step + ' of 8: ' + step.who + ' ' + what,\n        user: 'Step ' + w.step + ' finished. Press Next step to continue.',\n        error: 'Step ' + w.step + ' failed. Start runs the cycle again from step 1.',\n        stopped: 'All machines stopped. Start runs a new cycle from step 1.',\n      }[w.waitingFor] || ''\n    },\n    doing () {   // the coordinator's current command, in plain words\n      const it = this.w && this.w.item\n      if (!it) return ''\n      if (it.wait !== undefined) return 'waiting ' + it.wait + ' s for the gripper'\n      const who = { agv: 'AGV', arm1: 'arm 1', arm2: 'arm 2', conveyor: 'conveyor', cartesian: 'cartesian' }[it.to] || it.to\n      const c = it.cmd || {}\n      const agv = { f: 'forward', b: 'back', l: 'left', r: 'right', cw: 'turn right', ccw: 'turn left' }\n      if (c.cmd === 'move') return who + ' moves to ' + c.value.slice(0, 4).join(' / ')\n      if (c.cmd === 'joint') return who + ' sets the gripper to ' + c.value + '°'\n      if (c.cmd === 'step') return 'conveyor runs to the next box'\n      if (c.cmd === 'store') return 'cartesian stores the box on shelf ' + c.shelf\n      if (c.cmd === 'home') return who + ' goes home'\n      if (agv[c.cmd]) return 'AGV ' + agv[c.cmd] + ' ' + c.value + (c.cmd.indexOf('cw') >= 0 ? '°' : ' mm')\n      return who + ': ' + c.cmd\n    }\n  },\n  methods: {\n    label (i) {\n      const shelf = this.w ? this.w.shelf : ''\n      return [\n        { who: 'Conveyor', what: 'Brings the box to arm 2' },\n        { who: 'Arm 2', what: 'Picks the box' },\n        { who: 'Arm 2', what: 'Loads the AGV' },\n        { who: 'AGV', what: 'Drives to arm 1' },\n        { who: 'Arm 1', what: 'Picks the box' },\n        { who: 'Arm 1', what: 'Hands it to the cartesian' },\n        { who: 'Cartesian', what: 'Stores it on shelf ' + shelf },\n        { who: 'AGV and cartesian', what: 'Return home' },\n      ][i] || { who: '', what: '' }\n    },\n    statusText (s) {\n      return { running: 'Running', done: 'Done', error: 'Failed', stopped: 'Stopped' }[s] || 'Waiting'\n    }\n  }\n}\n</script>\n\n<style>\n.tw-cycle .now { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }\n.tw-cycle .ask { font: 600 24px/1.2 var(--tw-head); margin: 0; flex: 1; min-width: 260px; color: var(--tw-ink); }\n.tw-cycle .ask.user { color: var(--tw-warn); }\n.tw-cycle .ask.error, .tw-cycle .ask.stopped { color: var(--tw-alarm); }\n.tw-cycle .count { font-size: 13px; color: var(--tw-muted); font-variant-numeric: tabular-nums; }\n.tw-cycle .cmd { margin: 8px 0 0; font-size: 13px; color: var(--tw-muted); }\n.tw-cycle .say { margin: 10px 0 0; }\n\n/* the process line */\n.tw-cycle .line { list-style: none; margin: 22px 0 4px; padding: 0; display: grid; grid-template-columns: repeat(8, 1fr); }\n.tw-cycle .node { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center;\n  padding: 0 4px; gap: 2px; }\n.tw-cycle .node::before { content: \"\"; position: absolute; top: 17px; right: 50%; width: 100%; height: 3px;\n  background: var(--tw-line); z-index: 0; }\n.tw-cycle .node:first-child::before { display: none; }\n.tw-cycle .node.done::before, .tw-cycle .node.running::before, .tw-cycle .node.current::before { background: var(--tw-ink); }\n.tw-cycle .dot { position: relative; z-index: 1; width: 37px; height: 37px; border-radius: 50%; display: grid; place-items: center;\n  font: 600 16px var(--tw-head); background: var(--tw-panel); border: 3px solid var(--tw-line); color: var(--tw-muted);\n  margin-bottom: 6px; font-variant-numeric: tabular-nums; }\n.tw-cycle .node.done .dot { background: var(--tw-ink); border-color: var(--tw-ink); color: #fff; }\n.tw-cycle .node.running .dot { background: var(--tw-steel); border-color: var(--tw-steel); color: #fff; }\n.tw-cycle .node.current:not(.running):not(.error):not(.stopped) .dot { border-color: var(--tw-warn); color: var(--tw-warn); }\n.tw-cycle .node.error .dot, .tw-cycle .node.stopped .dot { background: var(--tw-alarm); border-color: var(--tw-alarm); color: #fff; }\n.tw-cycle .who { font: 600 14px/1.2 var(--tw-head); }\n.tw-cycle .what { font-size: 13px; line-height: 1.3; color: var(--tw-muted); }\n.tw-cycle .st { margin-top: 4px; font-size: 12px; color: var(--tw-muted); }\n.tw-cycle .node.running .st { color: var(--tw-steel); font-weight: 600; }\n.tw-cycle .node.error .st, .tw-cycle .node.stopped .st { color: var(--tw-alarm); font-weight: 600; }\n@media (prefers-reduced-motion: no-preference) {\n  .tw-cycle .node.running .dot { animation: tw-pulse 1.6s ease-out infinite; }\n  @keyframes tw-pulse { 0% { box-shadow: 0 0 0 0 rgba(42, 92, 136, .45); } 100% { box-shadow: 0 0 0 12px rgba(42, 92, 136, 0); } }\n}\n/* narrow screens: the line runs down the page */\n@media (max-width: 760px) {\n  .tw-cycle .line { grid-template-columns: 1fr; gap: 14px; }\n  .tw-cycle .node { display: grid; grid-template-columns: 37px 1fr auto; column-gap: 12px; text-align: left; align-items: center; padding: 0; }\n  .tw-cycle .node::before { top: auto; bottom: 100%; right: auto; left: 17px; width: 3px; height: 14px; }\n  .tw-cycle .dot { grid-row: span 2; margin: 0; }\n  .tw-cycle .st { grid-row: 1 / span 2; grid-column: 3; margin: 0; }\n}\n</style>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 640,
+    "y": 120,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "d7a0000000000021",
+    "type": "ui-template",
+    "z": "d7a0000000000001",
+    "group": "d7a0000000000005",
+    "page": "",
+    "ui": "",
+    "name": "Machines",
+    "order": 1,
+    "width": "12",
+    "height": "5",
+    "head": "",
+    "format": "<template>\n  <div class=\"tw tw-mach\">\n    <div class=\"bar\">\n      <span :class=\"['lamp', online ? 'ok' : 'bad']\" aria-hidden=\"true\"></span>\n      <span>{{ online ? 'Coordinator running' : 'Coordinator offline' }}</span>\n      <button class=\"primary\" :disabled=\"!online\" @click=\"check('all')\">Check all machines</button>\n    </div>\n    <ul class=\"grid\">\n      <li v-for=\"d in list\" :key=\"d.name\" :class=\"['m', conn(d)]\">\n        <div class=\"top\">\n          <span :class=\"['lamp', lamp(d)]\" aria-hidden=\"true\"></span>\n          <span class=\"name\">{{ d.label }}</span>\n        </div>\n        <dl>\n          <dt>Link</dt><dd :class=\"conn(d)\">{{ connText(d) }}</dd>\n          <dt>Doing</dt><dd>{{ stateText(d.state) }}</dd>\n          <dt>Ready</dt><dd :class=\"'r-' + readyClass(d.check)\">{{ readyText(d) }}</dd>\n          <dt>Heard</dt><dd class=\"num\">{{ d.seen || 'not yet' }}</dd>\n        </dl>\n        <p class=\"extra\">{{ extra(d) }}</p>\n        <button :disabled=\"!online || d.check === 'pending'\" @click=\"check(d.name)\">\n          {{ d.check === 'pending' ? 'Checking' : 'Check' }}</button>\n      </li>\n    </ul>\n  </div>\n</template>\n\n<script>\nexport default {\n  computed: {\n    r () { return (this.msg && this.msg.payload) || {} },\n    online () { return this.r.coordinator === 'online' },\n    list () {\n      const labels = { conveyor: 'Conveyor', arm2: 'Arm 2', agv: 'AGV', arm1: 'Arm 1', cartesian: 'Cartesian' }\n      const devices = this.r.devices || {}\n      return Object.keys(labels).map(name => Object.assign({ name, label: labels[name] }, devices[name] || {}))\n    }\n  },\n  methods: {\n    check (name) { this.send({ topic: 'check', payload: name }) },\n    conn (d) { return d.online === true ? 'online' : d.online === false ? 'offline' : 'unknown' },\n    connText (d) { return { online: 'Connected', offline: 'Not connected', unknown: 'No news yet' }[this.conn(d)] },\n    readyClass (c) { return c === 'ready' ? 'ok' : c === 'pending' ? 'wait' : c ? 'bad' : '' },\n    readyText (d) {\n      return { ready: 'Ready', 'not ready': 'Not ready', 'no reply': 'No answer', pending: 'Checking' }[d.check]\n        || 'Not checked'\n    },\n    lamp (d) {\n      if (d.online === false || d.check === 'no reply') return 'bad'\n      if (d.check === 'not ready' || (d.last && d.last.fault)) return 'warn'\n      return d.online ? 'ok' : ''\n    },\n    stateText (s) {\n      return { moving: 'Moving', running: 'Belt running', decelerating: 'Slowing down', waiting: 'Holding a box',\n        done: 'Finished a move', ready: 'Idle', manual_stop: 'Stopped', manual_run: 'Belt running',\n        stopped: 'Stopped', error: 'Reported an error', check: 'Answered a check', offline: 'Off' }[s] || s || 'Nothing yet'\n    },\n    extra (d) {\n      const l = d.last || {}\n      if (l.fault) return 'Stalled: the encoder stopped counting'\n      if (l.msg) return l.msg\n      if (Array.isArray(l.pose)) return 'Joints ' + l.pose.join(' / ')\n      if (l.item !== undefined) return l.item ? 'Box at the sensor' : 'No box at the sensor'\n      if (Array.isArray(l.travel_mm)) return 'Last move ' + l.travel_mm.map(v => Math.round(v)).join(' / ') + ' mm'\n      return ''\n    }\n  }\n}\n</script>\n\n<style>\n.tw-mach .bar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }\n.tw-mach .bar button { margin-left: auto; }\n.tw-mach .lamp { width: 12px; height: 12px; border-radius: 50%; background: var(--tw-line); flex: none; }\n.tw-mach .lamp.ok { background: var(--tw-run); }\n.tw-mach .lamp.warn { background: var(--tw-warn); }\n.tw-mach .lamp.bad { background: var(--tw-alarm); }\n.tw-mach .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));\n  border: 1px solid var(--tw-line); border-radius: 6px; background: #fff; }\n.tw-mach .m { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; border-left: 1px solid var(--tw-line); }\n.tw-mach .m:first-child { border-left: none; }\n.tw-mach .m.offline { background: var(--tw-alarm-soft); }\n.tw-mach .top { display: flex; align-items: center; gap: 8px; }\n.tw-mach .name { font: 600 18px var(--tw-head); }\n.tw-mach dl { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 0; font-size: 14px; }\n.tw-mach dt { color: var(--tw-muted); }\n.tw-mach dd { margin: 0; }\n.tw-mach dd.offline, .tw-mach dd.r-bad { color: var(--tw-alarm); font-weight: 600; }\n.tw-mach dd.online, .tw-mach dd.r-ok { color: var(--tw-run); font-weight: 600; }\n.tw-mach dd.r-wait { color: var(--tw-warn); }\n.tw-mach .num { font-variant-numeric: tabular-nums; }\n.tw-mach .extra { margin: 0; font-size: 13px; color: var(--tw-muted); min-height: 18px; }\n.tw-mach .m button { margin-top: auto; }\n@media (max-width: 900px) { .tw-mach .m { border-left: none; border-top: 1px solid var(--tw-line); }\n  .tw-mach .m:first-child { border-top: none; } }\n</style>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 640,
+    "y": 160,
+    "wires": [
+      [
+        "d7a0000000000008"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000008",
+    "type": "function",
+    "z": "d7a0000000000001",
+    "name": "To coordinator",
+    "func": "// Panels send msg.topic = command and msg.payload = value\nreturn { payload: { cmd: msg.topic, value: msg.payload } };",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 900,
+    "y": 120,
+    "wires": [
+      [
+        "d7a0000000000009"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000009",
+    "type": "mqtt out",
+    "z": "d7a0000000000001",
+    "name": "To dgt/twin/ui",
+    "topic": "dgt/twin/ui",
+    "qos": "1",
+    "retain": "false",
+    "respTopic": "",
+    "contentType": "",
+    "userProps": "",
+    "correl": "",
+    "expiry": "",
+    "broker": "d7a0000000000007",
+    "x": 1100,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "d7a0000000000040",
+    "type": "ui-template",
+    "z": "d7a0000000000001",
+    "group": "d7a0000000000030",
+    "page": "",
+    "ui": "",
+    "name": "Manual AGV",
+    "order": 1,
+    "width": "8",
+    "height": "7",
+    "head": "",
+    "format": "<template>\n  <div class=\"tw tw-agv\">\n    <p class=\"muted note\">Goes straight to the machine. Use it only when no cycle is running.</p>\n    <div class=\"body\">\n      <div class=\"pad\" role=\"group\" aria-label=\"Jog the AGV\">\n        <button @click=\"go('ccw', angle)\" title=\"Turn left (counter-clockwise)\">&#10226; Turn left</button>\n        <button class=\"primary\" @click=\"go('f', dist)\">&#8593; Forward</button>\n        <button @click=\"go('cw', angle)\" title=\"Turn right (clockwise)\">Turn right &#10227;</button>\n        <button @click=\"go('l', dist)\">&#8592; Left</button>\n        <button class=\"stop\" @click=\"go('s')\">Stop</button>\n        <button @click=\"go('r', dist)\">Right &#8594;</button>\n        <span></span>\n        <button @click=\"go('b', dist)\">&#8595; Back</button>\n        <span></span>\n      </div>\n      <div class=\"set\">\n        <label>Distance, mm<input type=\"number\" v-model.number=\"dist\" min=\"1\"></label>\n        <label>Turn, degrees<input type=\"number\" v-model.number=\"angle\" min=\"1\"></label>\n        <label>Speed, mm/s<input type=\"number\" v-model.number=\"speed\" min=\"1\"></label>\n        <button @click=\"go('v', speed)\">Set speed</button>\n      </div>\n    </div>\n    <p class=\"muted sent\">{{ sent }}</p>\n    <div class=\"lockbox\">\n      <p>Moves since you last cleared: <b>{{ recorded.length ? words(recorded) : 'none yet' }}</b></p>\n      <div class=\"row\">\n        <button class=\"primary\" :disabled=\"!recorded.length\" @click=\"lock()\">Lock route for step 4</button>\n        <button :disabled=\"!recorded.length\" @click=\"recorded = []\">Clear moves</button>\n      </div>\n      <p v-if=\"locked\">Locked route: <b>{{ words(locked.route) }}</b> at <b>{{ locked.speed }} mm/s</b>.\n        Step 8 drives it in reverse to come home.</p>\n      <p v-else>Locked route shows here once the coordinator is running.</p>\n    </div>\n  </div>\n</template>\n\n<script>\nexport default {\n  data () { return { device: 'agv', dist: 300, angle: 90, speed: 150, recorded: [], locked: null, loaded: false,\n                     progress: null, sent: '' } },\n  watch: {\n    msg: {\n      immediate: true,\n      handler (m) {\n        const p = m && m.payload\n        if (!p) return\n        if (p.coordinator === undefined) { this.progress = p; return }\n        this.locked = p.coordinator === 'online' && p.sequence ? p.sequence[this.device] : null\n        if (this.locked && !this.loaded) { this.loadLocked(); this.loaded = true }\n      }\n    }\n  },\n  methods: {\n    go (cmd, value) {\n      if (value !== undefined && !(value > 0)) { this.sent = 'Enter a number above 0 first.'; return }\n      const payload = value === undefined ? { cmd } : { cmd, value }\n      this.send({ topic: 'dgt_agv/control', payload })\n      if (['f', 'b', 'l', 'r', 'cw', 'ccw'].includes(cmd)) this.recorded.push(payload)\n      this.sent = 'Sent: ' + this.words([payload])\n    },\n    lock () {\n      this.send({ topic: 'lock', payload: { device: 'agv', route: this.recorded.slice(), speed: this.speed } })\n      this.sent = 'Lock sent. The locked route below updates when the coordinator saves it.'\n    },\n    loadLocked () { this.speed = this.locked.speed },\n    words (route) {\n      const name = { f: 'forward', b: 'back', l: 'left', r: 'right', cw: 'turn right', ccw: 'turn left', v: 'speed', s: 'stop' }\n      const unit = { cw: '°', ccw: '°', v: ' mm/s' }\n      return route.map(m => name[m.cmd] + (m.value !== undefined ? ' ' + m.value + (unit[m.cmd] || ' mm') : '')).join(', ')\n        || 'no moves'\n    }\n  }\n}\n</script>\n\n<style>\n.tw-agv { display: flex; flex-direction: column; gap: 10px; }\n.tw-agv .note { margin: 0; }\n.tw-agv .body { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 18px; align-items: start; }\n.tw-agv .pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }\n.tw-agv .pad button { padding: 14px 6px; }\n.tw-agv .set { display: grid; gap: 10px; }\n.tw-agv .sent { margin: 0; min-height: 18px; }\n.tw-agv .row { display: flex; gap: 8px; flex-wrap: wrap; }\n@media (max-width: 640px) { .tw-agv .body { grid-template-columns: 1fr; } }\n</style>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 160,
+    "y": 260,
+    "wires": [
+      [
+        "d7a0000000000049"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000041",
+    "type": "ui-template",
+    "z": "d7a0000000000001",
+    "group": "d7a0000000000031",
+    "page": "",
+    "ui": "",
+    "name": "Manual conveyor",
+    "order": 1,
+    "width": "4",
+    "height": "5",
+    "head": "",
+    "format": "<template>\n  <div class=\"tw tw-conv\">\n    <p class=\"muted note\">Goes straight to the machine. Use it only when no cycle is running.</p>\n    <button class=\"primary\" @click=\"go('start')\">Run belt</button>\n    <button @click=\"go('auto')\">Run to the next box</button>\n    <button class=\"stop\" @click=\"go('stop')\">Stop belt</button>\n    <p class=\"muted\">{{ sent }}</p>\n  </div>\n</template>\n\n<script>\nexport default {\n  data () { return { sent: '' } },\n  methods: {\n    go (cmd) {\n      this.send({ topic: 'dgt_conv/control', payload: { cmd } })\n      this.sent = { start: 'Belt running. It ignores the sensor.', auto: 'Belt runs until a box reaches the sensor.',\n                    stop: 'Belt stopped.' }[cmd]\n    }\n  }\n}\n</script>\n\n<style>\n.tw-conv { display: flex; flex-direction: column; gap: 8px; }\n.tw-conv .note { margin: 0 0 4px; }\n.tw-conv button { padding: 13px 14px; }\n.tw-conv p:last-child { margin: 0; min-height: 18px; }\n</style>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 160,
+    "y": 300,
+    "wires": [
+      [
+        "d7a0000000000049"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000044",
+    "type": "ui-template",
+    "z": "d7a0000000000001",
+    "group": "d7a0000000000034",
+    "page": "",
+    "ui": "",
+    "name": "Manual arm 2",
+    "order": 1,
+    "width": "6",
+    "height": "7",
+    "head": "",
+    "format": "<template>\n  <div class=\"tw tw-arm\">\n    <p class=\"muted note\">Arm 2 picks from the conveyor and loads the AGV. Goes straight to the arm. Use it only when no cycle is running.</p>\n    <div class=\"poses\">\n      <span></span><span class=\"j\">J1</span><span class=\"j\">J2</span><span class=\"j\">J3</span><span class=\"j\">J4</span><span></span>\n      <span class=\"what\">Pick at</span>\n      <input v-for=\"(v, i) in pick\" :key=\"'p' + i\" type=\"number\" v-model.number=\"pick[i]\" :aria-label=\"'Pick J' + (i + 1)\">\n      <button class=\"primary\" @click=\"run('pick')\">Pick</button>\n      <span class=\"what\">Place at</span>\n      <input v-for=\"(v, i) in place\" :key=\"'q' + i\" type=\"number\" v-model.number=\"place[i]\" :aria-label=\"'Place J' + (i + 1)\">\n      <button class=\"primary\" @click=\"run('place')\">Place</button>\n    </div>\n    <div class=\"grip\">\n      <label>Gripper on (grab), deg<input type=\"number\" v-model.number=\"gripOn\"></label>\n      <label>Gripper off (release), deg<input type=\"number\" v-model.number=\"gripOff\"></label>\n      <button class=\"stop\" @click=\"stop()\">Stop arm</button>\n    </div>\n    <p :class=\"['say', progress ? progress.level : '']\">{{ progress ? progress.time + '  ' + progress.text : 'Pick: open gripper, move, gripper on, wait 2 s. Place: move, gripper off, wait 2 s.' }}</p>\n    <div class=\"lockbox\">\n      <button class=\"primary lock\" @click=\"lock()\">Lock these values for the cycle</button>\n      <p v-if=\"locked\">Locked: pick at <b>{{ locked.pick.join(' / ') }}</b>, place at <b>{{ locked.place.join(' / ') }}</b>,\n        gripper on <b>{{ locked.grip_on }}°</b>, off <b>{{ locked.grip_off }}°</b>.</p>\n      <p v-else>Locked values show here once the coordinator is running.</p>\n    </div>\n  </div>\n</template>\n\n<script>\nexport default {\n  data () { return { device: 'arm2', pick: [50, 85, 125, 75], place: [130, 85, 125, 75], gripOn: 20, gripOff: 90,\n                     locked: null, loaded: false, progress: null } },\n  watch: {\n    msg: {\n      immediate: true,\n      handler (m) {\n        const p = m && m.payload\n        if (!p) return\n        if (p.coordinator === undefined) { this.progress = p; return }\n        this.locked = p.coordinator === 'online' && p.sequence ? p.sequence[this.device] : null\n        if (this.locked && !this.loaded) { this.loadLocked(); this.loaded = true }\n      }\n    }\n  },\n  methods: {\n    run (action) {\n      const pose = action === 'pick' ? this.pick : this.place\n      const grip = action === 'pick' ? this.gripOn : this.gripOff\n      this.send({ topic: 'seq', payload: { arm: 'arm2', action, pose: pose.slice(), grip, open: this.gripOff } })\n    },\n    stop () { this.send({ topic: 'seq', payload: { arm: 'arm2', action: 'stop' } }) },\n    lock () {\n      this.send({ topic: 'lock', payload: { device: 'arm2', pick: this.pick.slice(), place: this.place.slice(),\n                                           grip_on: this.gripOn, grip_off: this.gripOff } })\n    },\n    loadLocked () {\n      this.pick = this.locked.pick.slice(); this.place = this.locked.place.slice()\n      this.gripOn = this.locked.grip_on; this.gripOff = this.locked.grip_off\n    }\n  }\n}\n</script>\n\n<style>\n.tw-arm { display: flex; flex-direction: column; gap: 12px; }\n.tw-arm .note { margin: 0; }\n.tw-arm .poses { display: grid; grid-template-columns: 70px repeat(4, minmax(0, 1fr)) 84px; gap: 6px 6px; align-items: center; }\n.tw-arm .j { font-size: 13px; color: var(--tw-muted); text-align: center; }\n.tw-arm .what { font-size: 14px; font-weight: 500; }\n.tw-arm .grip { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; }\n.tw-arm .say { margin: 0; }\n.tw-arm .lock { align-self: flex-start; }\n@media (max-width: 520px) { .tw-arm .grip { grid-template-columns: 1fr 1fr; } .tw-arm .grip button { grid-column: span 2; } }\n</style>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 160,
+    "y": 340,
+    "wires": [
+      [
+        "d7a0000000000049"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000043",
+    "type": "ui-template",
+    "z": "d7a0000000000001",
+    "group": "d7a0000000000033",
+    "page": "",
+    "ui": "",
+    "name": "Manual arm 1",
+    "order": 1,
+    "width": "6",
+    "height": "7",
+    "head": "",
+    "format": "<template>\n  <div class=\"tw tw-arm\">\n    <p class=\"muted note\">Arm 1 picks from the AGV and hands to the cartesian. Goes straight to the arm. Use it only when no cycle is running.</p>\n    <div class=\"poses\">\n      <span></span><span class=\"j\">J1</span><span class=\"j\">J2</span><span class=\"j\">J3</span><span class=\"j\">J4</span><span></span>\n      <span class=\"what\">Pick at</span>\n      <input v-for=\"(v, i) in pick\" :key=\"'p' + i\" type=\"number\" v-model.number=\"pick[i]\" :aria-label=\"'Pick J' + (i + 1)\">\n      <button class=\"primary\" @click=\"run('pick')\">Pick</button>\n      <span class=\"what\">Place at</span>\n      <input v-for=\"(v, i) in place\" :key=\"'q' + i\" type=\"number\" v-model.number=\"place[i]\" :aria-label=\"'Place J' + (i + 1)\">\n      <button class=\"primary\" @click=\"run('place')\">Place</button>\n    </div>\n    <div class=\"grip\">\n      <label>Gripper on (grab), deg<input type=\"number\" v-model.number=\"gripOn\"></label>\n      <label>Gripper off (release), deg<input type=\"number\" v-model.number=\"gripOff\"></label>\n      <button class=\"stop\" @click=\"stop()\">Stop arm</button>\n    </div>\n    <p :class=\"['say', progress ? progress.level : '']\">{{ progress ? progress.time + '  ' + progress.text : 'Pick: open gripper, move, gripper on, wait 2 s. Place: move, gripper off, wait 2 s.' }}</p>\n    <div class=\"lockbox\">\n      <button class=\"primary lock\" @click=\"lock()\">Lock these values for the cycle</button>\n      <p v-if=\"locked\">Locked: pick at <b>{{ locked.pick.join(' / ') }}</b>, place at <b>{{ locked.place.join(' / ') }}</b>,\n        gripper on <b>{{ locked.grip_on }}°</b>, off <b>{{ locked.grip_off }}°</b>.</p>\n      <p v-else>Locked values show here once the coordinator is running.</p>\n    </div>\n  </div>\n</template>\n\n<script>\nexport default {\n  data () { return { device: 'arm1', pick: [50, 85, 125, 75], place: [130, 85, 125, 75], gripOn: 20, gripOff: 90,\n                     locked: null, loaded: false, progress: null } },\n  watch: {\n    msg: {\n      immediate: true,\n      handler (m) {\n        const p = m && m.payload\n        if (!p) return\n        if (p.coordinator === undefined) { this.progress = p; return }\n        this.locked = p.coordinator === 'online' && p.sequence ? p.sequence[this.device] : null\n        if (this.locked && !this.loaded) { this.loadLocked(); this.loaded = true }\n      }\n    }\n  },\n  methods: {\n    run (action) {\n      const pose = action === 'pick' ? this.pick : this.place\n      const grip = action === 'pick' ? this.gripOn : this.gripOff\n      this.send({ topic: 'seq', payload: { arm: 'arm1', action, pose: pose.slice(), grip, open: this.gripOff } })\n    },\n    stop () { this.send({ topic: 'seq', payload: { arm: 'arm1', action: 'stop' } }) },\n    lock () {\n      this.send({ topic: 'lock', payload: { device: 'arm1', pick: this.pick.slice(), place: this.place.slice(),\n                                           grip_on: this.gripOn, grip_off: this.gripOff } })\n    },\n    loadLocked () {\n      this.pick = this.locked.pick.slice(); this.place = this.locked.place.slice()\n      this.gripOn = this.locked.grip_on; this.gripOff = this.locked.grip_off\n    }\n  }\n}\n</script>\n\n<style>\n.tw-arm { display: flex; flex-direction: column; gap: 12px; }\n.tw-arm .note { margin: 0; }\n.tw-arm .poses { display: grid; grid-template-columns: 70px repeat(4, minmax(0, 1fr)) 84px; gap: 6px 6px; align-items: center; }\n.tw-arm .j { font-size: 13px; color: var(--tw-muted); text-align: center; }\n.tw-arm .what { font-size: 14px; font-weight: 500; }\n.tw-arm .grip { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; }\n.tw-arm .say { margin: 0; }\n.tw-arm .lock { align-self: flex-start; }\n@media (max-width: 520px) { .tw-arm .grip { grid-template-columns: 1fr 1fr; } .tw-arm .grip button { grid-column: span 2; } }\n</style>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 160,
+    "y": 380,
+    "wires": [
+      [
+        "d7a0000000000049"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000049",
+    "type": "function",
+    "z": "d7a0000000000001",
+    "name": "Manual router",
+    "func": "// Manual panels: 'lock' -> coordinator, 'seq' -> arm sequence, anything else -> straight to a device topic\nif (msg.topic === 'lock') return [null, msg, null];\nif (msg.topic === 'seq') return [null, null, msg];\nreturn [msg, null, null];",
+    "outputs": 3,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 320,
+    "wires": [
+      [
+        "d7a0000000000046"
+      ],
+      [
+        "d7a0000000000008"
+      ],
+      [
+        "d7a0000000000045"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000047",
+    "type": "mqtt in",
+    "z": "d7a0000000000001",
+    "name": "dgt_rba1/status",
+    "topic": "dgt_rba1/status",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "d7a0000000000007",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 160,
+    "y": 440,
+    "wires": [
+      [
+        "d7a0000000000045"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000048",
+    "type": "mqtt in",
+    "z": "d7a0000000000001",
+    "name": "dgt_rba2/status",
+    "topic": "dgt_rba2/status",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "d7a0000000000007",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 160,
+    "y": 480,
+    "wires": [
+      [
+        "d7a0000000000045"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000045",
+    "type": "function",
+    "z": "d7a0000000000001",
+    "name": "Arm pick/place sequence",
+    "func": "// Pick / place for one arm, built from the arm's basic commands (each waits for \"done\"):\n//   0. pick only: {\"cmd\":\"joint\",\"joint\":5,\"value\":open}   open the gripper first\n//   1. {\"cmd\":\"move\",\"value\":[J1,J2,J3,J4,-1]}   (-1 = keep J5)\n//   2. {\"cmd\":\"joint\",\"joint\":5,\"value\":grip}    gripper on (pick) / off (place)\n//   3. wait 2 s, then report finished\n// Inputs: msg.topic \"seq\" from the arm panels, or an arm status (dgt_rba1/status, dgt_rba2/status)\n// Outputs: 1 -> MQTT (msg.topic = arm control topic), 2 -> Arm 1 panel, 3 -> Arm 2 panel\nconst PREFIX = { arm1: 'dgt_rba1', arm2: 'dgt_rba2' };\nconst GRIP_WAIT_MS = 2000;\nconst KEEP = -1;\n\nconst seqs = context.get('seqs') || {};\nconst save = () => context.set('seqs', seqs);\nconst command = (arm, payload) => ({ topic: PREFIX[arm] + '/control', payload });\nconst word = action => action === 'pick' ? 'Pick' : 'Place';\nconst progress = (arm, text, level) => {\n    const out = [null, null, null];\n    out[arm === 'arm1' ? 1 : 2] = { payload: { text, level: level || 'info', time: new Date().toLocaleTimeString() } };\n    return out;\n};\nconst withCommand = (arm, payload, text, level) => {\n    const out = progress(arm, text, level);\n    out[0] = command(arm, payload);\n    return out;\n};\n\n// ---- from a panel button\nif (msg.topic === 'seq') {\n    const p = msg.payload || {};\n    const arm = p.arm;\n    if (!PREFIX[arm]) return null;\n    if (p.action === 'stop') {\n        delete seqs[arm]; save();\n        return withCommand(arm, { cmd: 'stop' }, 'Arm stopped.', 'error');\n    }\n    if (seqs[arm]) return progress(arm, word(seqs[arm].action) + ' is still running. Press Stop arm first.', 'warn');\n    const pose = (p.pose || []).map(Number);\n    const grip = Number(p.grip);\n    const open = Number(p.open);\n    if (pose.length !== 4 || pose.some(isNaN) || isNaN(grip) || (p.action === 'pick' && isNaN(open))) {\n        return progress(arm, 'Fill in J1 to J4 and the gripper angles.', 'warn');\n    }\n    if (p.action === 'pick') {   // the gripper may still be closed (power-up HOME closes it)\n        seqs[arm] = { action: p.action, phase: 'open', pose, grip };\n        save();\n        return withCommand(arm, { cmd: 'joint', joint: 5, value: open }, 'Pick: opening the gripper (' + open + '°)');\n    }\n    seqs[arm] = { action: p.action, phase: 'move', pose, grip };\n    save();\n    return withCommand(arm, { cmd: 'move', value: pose.concat([KEEP]) }, 'Place: moving to ' + pose.join(' / '));\n}\n\n// ---- arm status\nconst arm = Object.keys(PREFIX).find(a => msg.topic === PREFIX[a] + '/status');\nconst s = arm && seqs[arm];\nconst state = msg.payload && msg.payload.state;\nif (!s) return null;\nif (state === 'error' || state === 'stopped' || state === 'offline') {\n    delete seqs[arm]; save();\n    return progress(arm, word(s.action) + ' failed: ' + (msg.payload.msg || state), 'error');\n}\nif (state !== 'done') return null;\n\nif (s.phase === 'open') {\n    s.phase = 'move'; save();\n    return withCommand(arm, { cmd: 'move', value: s.pose.concat([KEEP]) }, 'Pick: moving to ' + s.pose.join(' / '));\n}\nif (s.phase === 'move') {\n    s.phase = 'grip'; save();\n    return withCommand(arm, { cmd: 'joint', joint: 5, value: s.grip },\n                       word(s.action) + ': gripper ' + (s.action === 'pick' ? 'on' : 'off') + ' (' + s.grip + '°)');\n}\nif (s.phase === 'grip') {\n    s.phase = 'wait'; save();\n    setTimeout(() => {\n        const now = context.get('seqs') || {};\n        if (now[arm] !== s) return;           // stopped meanwhile\n        delete now[arm]; context.set('seqs', now);\n        node.send(progress(arm, word(s.action) + ' finished.', 'ok'));\n    }, GRIP_WAIT_MS);\n    return progress(arm, word(s.action) + ': waiting 2 s');\n}\nreturn null;",
+    "outputs": 3,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 440,
+    "y": 440,
+    "wires": [
+      [
+        "d7a0000000000046"
+      ],
+      [
+        "d7a0000000000043"
+      ],
+      [
+        "d7a0000000000044"
+      ]
+    ]
+  },
+  {
+    "id": "d7a0000000000046",
+    "type": "mqtt out",
+    "z": "d7a0000000000001",
+    "name": "Manual -> device (msg.topic)",
+    "topic": "",
+    "qos": "1",
+    "retain": "false",
+    "respTopic": "",
+    "contentType": "",
+    "userProps": "",
+    "correl": "",
+    "expiry": "",
+    "broker": "d7a0000000000007",
+    "x": 700,
+    "y": 320,
+    "wires": []
+  }
+]

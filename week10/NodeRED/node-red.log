@@ -1,0 +1,52 @@
+20 Nov 13:50:18 - [info] 
+
+Welcome to Node-RED
+===================
+
+20 Nov 13:50:18 - [info] Node-RED version: v5.0.9
+20 Nov 13:50:18 - [info] Node.js  version: v26.13.1
+20 Nov 13:50:18 - [info] Windows_NT 10.0.26300 x64 LE
+20 Nov 13:50:19 - [info] Loading palette nodes
+20 Nov 13:50:21 - [info] Dashboard version 3.6.6 started at /ui
+20 Nov 13:50:21 - [info] Settings file  : C:\Users\idtde\.node-red\settings.js
+20 Nov 13:50:21 - [info] Context store  : 'default' [module=memory]
+20 Nov 13:50:21 - [info] User directory : \Users\idtde\.node-red
+20 Nov 13:50:21 - [warn] Projects disabled : editorTheme.projects.enabled=false
+20 Nov 13:50:21 - [info] Flows file     : \Users\idtde\.node-red\flows.json
+20 Nov 13:50:21 - [warn] 
+
+---------------------------------------------------------------------
+Your flow credentials file is encrypted using a system-generated key.
+
+If the system-generated key is lost for any reason, your credentials
+file will not be recoverable, you will have to delete it and re-enter
+your credentials.
+
+You should set your own key using the 'credentialSecret' option in
+your settings file. Node-RED will then re-encrypt your credentials
+file using your chosen key the next time you deploy a change.
+---------------------------------------------------------------------
+
+20 Nov 13:50:21 - [info] Server now running at http://127.0.0.1:1880/
+20 Nov 13:50:21 - [info] Starting flows
+20 Nov 13:50:21 - [info] [ui-base:My Dashboard] Node-RED Dashboard 2.0 (v1.36.1) started at /dashboard
+20 Nov 13:50:21 - [info] [ui-base:My Dashboard] Created socket.io server bound to Node-RED port at path /dashboard/socket.io
+20 Nov 13:50:21 - [error] [ui-group:1f6f8a4b3c4c919f] TypeError: Cannot read properties of null (reading 'getBase')
+20 Nov 13:50:21 - [info] Started flows
+20 Nov 13:50:22 - [info] [mqtt-broker:broker.emqx.io (twin)] Connected to broker: mqtt://broker.emqx.io:1883
+20 Nov 13:50:22 - [info] [mqtt-broker:broker.emqx.io] Connected to broker: mqtt://broker.emqx.io:1883
+20 Nov 13:50:25 - [info] Stopping flows
+20 Nov 13:50:26 - [info] [mqtt-broker:broker.emqx.io (twin)] Disconnected from broker: mqtt://broker.emqx.io:1883
+20 Nov 13:50:26 - [info] [mqtt-broker:broker.emqx.io] Disconnected from broker: mqtt://broker.emqx.io:1883
+20 Nov 13:50:26 - [info] Stopped flows
+20 Nov 13:50:26 - [info] Updated flows
+20 Nov 13:50:26 - [info] Starting flows
+20 Nov 13:50:26 - [error] [ui-group:1f6f8a4b3c4c919f] TypeError: Cannot read properties of null (reading 'getBase')
+20 Nov 13:50:26 - [info] Started flows
+20 Nov 13:50:26 - [info] [mqtt-broker:broker.emqx.io (twin)] Connected to broker: mqtt://broker.emqx.io:1883
+20 Nov 13:50:26 - [info] [mqtt-broker:broker.emqx.io] Connected to broker: mqtt://broker.emqx.io:1883
+20 Nov 13:51:12 - [info] [ui-base:My Dashboard] Disconnected d8IhzzJln6WXGBkcAAAB due to ping timeout
+20 Nov 14:36:17 - [info] Stopping flows
+20 Nov 14:36:18 - [info] [mqtt-broker:broker.emqx.io] Disconnected from broker: mqtt://broker.emqx.io:1883
+20 Nov 14:36:18 - [info] [mqtt-broker:broker.emqx.io (twin)] Disconnected from broker: mqtt://broker.emqx.io:1883
+20 Nov 14:36:18 - [info] Stopped flows
